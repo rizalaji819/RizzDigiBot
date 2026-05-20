@@ -15,7 +15,7 @@ Sistem menetas telur untuk mendapatkan pet. Pemain bisa dapat telur dari shop at
 | Egg Inventory | Simpan telur sebelum di-hatch |
 | 4 Rarity Tiers | Common, Rare, Epic, Legendary |
 | Instant Hatch | Langsung dapat pet + pilih nama |
-| 24 Pet Species | Mix monster + animals |
+| 44 Pet Species | Mix monster + animals |
 
 ---
 
@@ -23,10 +23,10 @@ Sistem menetas telur untuk mendapatkan pet. Pemain bisa dapat telur dari shop at
 
 | Rarity | Drop Rate | Shop Price | Free Hatch |
 |--------|-----------|------------|------------|
-| Common | 55% | 100 coins | Yes |
-| Rare | 27% | 500 coins | Yes |
-| Epic | 14% | 2,500 coins | Yes |
-| Legendary | 4% | 15,000 coins | Yes |
+| Common | 50% | 100 coins | Yes |
+| Rare | 30% | 500 coins | Yes |
+| Epic | 15% | 2,500 coins | Yes |
+| Legendary | 5% | 15,000 coins | Yes |
 
 ---
 
@@ -75,7 +75,7 @@ User: /hatch
   │   ├─ Belum cooldown → "Free hatch ready!"
   │   └─ Masih cooldown → "Tunggu X jam lagi"
   │
-  ├─ Roll rarity (55/27/14/4)
+  ├─ Roll rarity (50/30/15/5)
   │
   ├─ Roll species berdasarkan rarity
   │
@@ -140,7 +140,7 @@ User: /hatch
 
 ## Pet Templates
 
-### Common Species (55%)
+### Common Species (50%) - 20 Pets
 
 | ID | Name | Species | Type | Base HP | Base ATK | Base DEF | Description |
 |----|------|---------|------|---------|----------|----------|-------------|
@@ -152,41 +152,57 @@ User: /hatch
 | 6 | Shelly | turtle | Animal | 120 | 4 | 8 | Slow but has a rock-hard shell. |
 | 7 | Ribbit | frog | Animal | 60 | 7 | 3 | Can leap high and poison enemies. |
 | 8 | Rocky | golem | Monster | 150 | 6 | 10 | Made of stone. Extremely durable. |
+| 9 | Buzzy | bee | Animal | 45 | 10 | 1 | Small but packs a painful sting. |
+| 10 | Chomp | piranha | Animal | 40 | 11 | 2 | Frenzied biter from the rivers. |
+| 11 | Fuzzbear | bear_cub | Animal | 100 | 8 | 6 | Adorable now, terrifying later. |
+| 12 | Hoot | owl | Animal | 60 | 9 | 3 | Silent hunter of the night. |
+| 13 | Nippy | ferret | Animal | 55 | 8 | 3 | Quick and mischievous. |
+| 14 | Pincers | beetle | Animal | 90 | 6 | 7 | Hard shell, stronger pinch. |
+| 15 | Snappy | lizard | Animal | 65 | 7 | 4 | Quick reflexes, warm blood. |
+| 16 | Squish | octopus | Animal | 70 | 8 | 5 | Eight arms of trouble. |
+| 17 | Waddle | penguin | Animal | 75 | 6 | 6 | Looks silly, fights hard. |
+| 18 | Yappy | hamster | Animal | 40 | 7 | 2 | Tiny but fierce energy. |
+| 19 | Fins | goldfish | Animal | 35 | 5 | 1 | Surprisingly determined. |
+| 20 | Crawly | ant | Animal | 30 | 6 | 2 | Weak alone, strong in spirit. |
 
-### Rare Species (27%)
-
-| ID | Name | Species | Type | Base HP | Base ATK | Base DEF | Description |
-|----|------|---------|------|---------|----------|----------|-------------|
-| 9 | Fang | wolf | Monster | 110 | 14 | 7 | Pack hunter with devastating bite. |
-| 10 | Ember | fox | Monster | 90 | 12 | 6 | Cunning and fast with fire tricks. |
-| 11 | Hop | bunny | Animal | 80 | 10 | 5 | Don't let the cuteness fool you. |
-| 12 | Snap | crocodile | Monster | 140 | 15 | 9 | Ancient predator with iron jaws. |
-| 13 | Hiss | snake | Monster | 75 | 13 | 4 | Stealthy striker with venomous fangs. |
-| 14 | Claw | crab | Monster | 100 | 11 | 12 | Hard shell and crushing claws. |
-| 15 | Buzz | bee | Monster | 65 | 14 | 3 | Small but packs a painful sting. |
-| 16 | Quill | porcupine | Animal | 95 | 10 | 11 | Spines make it hard to attack. |
-
-### Epic Species (14%)
-
-| ID | Name | Species | Type | Base HP | Base ATK | Base DEF | Description |
-|----|------|---------|------|---------|----------|----------|-------------|
-| 17 | Blaze | dragon | Monster | 160 | 22 | 12 | Breathes fire, king of the skies. |
-| 18 | Solar | phoenix | Monster | 130 | 20 | 8 | Reborn from its own ashes. |
-| 19 | Sparkle | unicorn | Monster | 140 | 18 | 14 | Magical horn purifies all wounds. |
-| 20 | Shadow | demon | Monster | 120 | 25 | 6 | Feeds on fear and darkness. |
-| 21 | Frost | ice_wolf | Monster | 150 | 19 | 11 | Breathes freezing wind. |
-| 22 | Thorn | treant | Monster | 180 | 16 | 16 | Ancient tree guardian. |
-| 23 | Viper | wyvern | Monster | 135 | 21 | 9 | Flying reptile with toxic tail. |
-| 24 | Tide | sea_serpent | Monster | 145 | 17 | 13 | Rules the deep oceans. |
-
-### Legendary Species (4%)
+### Rare Species (30%) - 12 Pets
 
 | ID | Name | Species | Type | Base HP | Base ATK | Base DEF | Description |
 |----|------|---------|------|---------|----------|----------|-------------|
-| 25 | Inferno | ancient_dragon | Monster | 220 | 35 | 20 | The oldest and most powerful dragon. |
-| 26 | Luna | celestial_wolf | Monster | 200 | 30 | 18 | Guardian of the moonlit night. |
-| 27 | Hydra | hydra | Monster | 250 | 28 | 25 | Cut one head, two more appear. |
-| 28 | Zero | void_lord | Monster | 180 | 38 | 15 | Master of dimensions and time. |
+| 21 | Fang | wolf | Monster | 110 | 14 | 7 | Pack hunter with devastating bite. |
+| 22 | Ember | fox | Monster | 90 | 12 | 6 | Cunning and fast with fire tricks. |
+| 23 | Hop | bunny | Animal | 80 | 10 | 5 | Don't let the cuteness fool you. |
+| 24 | Snap | crocodile | Monster | 140 | 15 | 9 | Ancient predator with iron jaws. |
+| 25 | Hiss | snake | Monster | 75 | 13 | 4 | Stealthy striker with venomous fangs. |
+| 26 | Claw | crab | Monster | 100 | 11 | 12 | Hard shell and crushing claws. |
+| 27 | Quill | porcupine | Animal | 95 | 10 | 11 | Spines make it hard to attack. |
+| 28 | Hornet | giant_wasp | Monster | 70 | 16 | 3 | Aggressive flyer with toxic sting. |
+| 29 | Tusker | boar | Animal | 130 | 13 | 8 | Charging force of nature. |
+| 30 | Raptor | hawk | Animal | 85 | 15 | 4 | Skydiver with razor talons. |
+| 31 | Snarl | hyena | Monster | 105 | 14 | 6 | Laughing predator, never gives up. |
+| 32 | Shellback | armadillo | Animal | 120 | 9 | 14 | Roll up and bash through anything. |
+
+### Epic Species (15%) - 8 Pets
+
+| ID | Name | Species | Type | Base HP | Base ATK | Base DEF | Description |
+|----|------|---------|------|---------|----------|----------|-------------|
+| 33 | Blaze | dragon | Monster | 160 | 22 | 12 | Breathes fire, king of the skies. |
+| 34 | Solar | phoenix | Monster | 130 | 20 | 8 | Reborn from its own ashes. |
+| 35 | Sparkle | unicorn | Monster | 140 | 18 | 14 | Magical horn purifies all wounds. |
+| 36 | Shadow | demon | Monster | 120 | 25 | 6 | Feeds on fear and darkness. |
+| 37 | Frost | ice_wolf | Monster | 150 | 19 | 11 | Breathes freezing wind. |
+| 38 | Thorn | treant | Monster | 180 | 16 | 16 | Ancient tree guardian. |
+| 39 | Viper | wyvern | Monster | 135 | 21 | 9 | Flying reptile with toxic tail. |
+| 40 | Tide | sea_serpent | Monster | 145 | 17 | 13 | Rules the deep oceans. |
+
+### Legendary Species (5%) - 4 Pets
+
+| ID | Name | Species | Type | Base HP | Base ATK | Base DEF | Description |
+|----|------|---------|------|---------|----------|----------|-------------|
+| 41 | Inferno | ancient_dragon | Monster | 220 | 35 | 20 | The oldest and most powerful dragon. |
+| 42 | Luna | celestial_wolf | Monster | 200 | 30 | 18 | Guardian of the moonlit night. |
+| 43 | Hydra | hydra | Monster | 250 | 28 | 25 | Cut one head, two more appear. |
+| 44 | Zero | void_lord | Monster | 180 | 38 | 15 | Master of dimensions and time. |
 
 ---
 
@@ -208,7 +224,7 @@ User: /hatch
 |------|-------------|
 | `src/commands/hatch.js` | /hatch, /eggs commands |
 | `src/commands/shop.js` | /shop command |
-| `src/pet/templates.js` | All 28 pet templates data |
+| `src/pet/templates.js` | All 44 pet templates data |
 
 ### Modified Files
 | File | Change |
@@ -223,7 +239,7 @@ User: /hatch
 ## Implementation Order
 
 1. [ ] Update database schema (egg_inventory table, users alteration)
-2. [ ] Create pet templates data (28 species)
+2. [ ] Create pet templates data (44 species)
 3. [ ] Create shop command
 4. [ ] Create hatch command
 5. [ ] Update start command
