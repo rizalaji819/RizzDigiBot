@@ -35,6 +35,12 @@ const {
   skillSetCommand,
   inventoryCommand,
 } = require('./commands/skills');
+const {
+  zonesCommand,
+  battleCommand,
+  handleZoneSelect,
+  handleBattleSkill,
+} = require('./battle/engine');
 
 if (!config.BOT_TOKEN) {
   console.error('BOT_TOKEN is not set in .env');
@@ -61,6 +67,8 @@ bot.command('skillshop', skillShopCommand);
 bot.command('skilllearn', skillLearnCommand);
 bot.command('skills', skillsCommand);
 bot.command('skillset', skillSetCommand);
+bot.command('zones', zonesCommand);
+bot.command('battle', battleCommand);
 
 bot.action(/^shop_buy_(.+)$/, (ctx) => {
   handleShopBuy(ctx, ctx.match[1]);
@@ -109,6 +117,14 @@ bot.action('item_buy_slot', (ctx) => {
 
 bot.action(/^skillshop_buy_(\d+)$/, (ctx) => {
   handleSkillShopBuy(ctx, ctx.match[1]);
+});
+
+bot.action(/^battle_zone_(.+)$/, (ctx) => {
+  handleZoneSelect(ctx, ctx.match[1]);
+});
+
+bot.action(/^battle_skill_(\d+)$/, (ctx) => {
+  handleBattleSkill(ctx, parseInt(ctx.match[1]));
 });
 
 bot.launch();

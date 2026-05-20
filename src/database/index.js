@@ -97,12 +97,37 @@ db.exec(`
     FOREIGN KEY (pet_id) REFERENCES pets(id),
     FOREIGN KEY (skill_id) REFERENCES skills(id)
   );
+
+  CREATE TABLE IF NOT EXISTS wild_monsters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    zone TEXT NOT NULL,
+    name TEXT NOT NULL,
+    species TEXT NOT NULL,
+    element TEXT DEFAULT 'neutral',
+    min_level INTEGER,
+    max_level INTEGER,
+    base_hp INTEGER,
+    base_attack INTEGER,
+    base_defense INTEGER,
+    exp_reward INTEGER,
+    coin_reward INTEGER
+  );
+
+  CREATE TABLE IF NOT EXISTS battle_cooldowns (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    zone TEXT NOT NULL,
+    last_battle DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
 `);
 
 const { insertPetTemplates, insertItemTemplates } = require('../pet/templates');
 const { insertSkillTemplates } = require('../pet/skills');
+const { insertWildMonsters } = require('../battle/monsters');
 insertPetTemplates(db);
 insertItemTemplates(db);
 insertSkillTemplates(db);
+insertWildMonsters(db);
 
 module.exports = db;
