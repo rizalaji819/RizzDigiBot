@@ -3,7 +3,7 @@ const db = require('../database');
 function getOrCreateUser(telegramId, username) {
   let user = db.prepare('SELECT * FROM users WHERE telegram_id = ?').get(telegramId);
   if (!user) {
-    const stmt = db.prepare('INSERT INTO users (telegram_id, username) VALUES (?, ?)');
+    const stmt = db.prepare('INSERT INTO users (telegram_id, username, coins) VALUES (?, ?, 200)');
     const result = stmt.run(telegramId, username || null);
     user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
   }
