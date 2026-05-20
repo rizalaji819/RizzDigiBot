@@ -11,6 +11,23 @@ const {
   petsCommand,
   handleSetActive,
 } = require('./commands/hatch');
+const {
+  petDetailCommand,
+  feedCommand,
+  handleFeed,
+  trainCommand,
+  releaseCommand,
+  handleReleaseSell,
+  handleReleaseFuse,
+  prestigeCommand,
+  handlePetRefresh,
+} = require('./commands/pet');
+const {
+  itemShopCommand,
+  handleItemBuy,
+  handleSlotBuy,
+  inventoryCommand,
+} = require('./commands/items');
 
 if (!config.BOT_TOKEN) {
   console.error('BOT_TOKEN is not set in .env');
@@ -26,6 +43,13 @@ bot.command('hatch', hatchCommand);
 bot.command('eggs', eggsCommand);
 bot.command('pets', petsCommand);
 bot.command('rename', renameCommand);
+bot.command('pet', petDetailCommand);
+bot.command('feed', feedCommand);
+bot.command('train', trainCommand);
+bot.command('release', releaseCommand);
+bot.command('prestige', prestigeCommand);
+bot.command('inventory', inventoryCommand);
+bot.command('items', itemShopCommand);
 
 bot.action(/^shop_buy_(.+)$/, (ctx) => {
   handleShopBuy(ctx, ctx.match[1]);
@@ -41,6 +65,35 @@ bot.action('hatch_free', (ctx) => {
 
 bot.action(/^pet_setactive_(\d+)$/, (ctx) => {
   handleSetActive(ctx, parseInt(ctx.match[1]));
+});
+
+bot.action(/^pet_refresh_(\d+)$/, (ctx) => {
+  handlePetRefresh(ctx, parseInt(ctx.match[1]));
+});
+
+bot.action(/^feed_(\d+)_(.+)$/, (ctx) => {
+  handleFeed(ctx, parseInt(ctx.match[1]), ctx.match[2]);
+});
+
+bot.action(/^release_sell_(\d+)$/, (ctx) => {
+  handleReleaseSell(ctx, parseInt(ctx.match[1]));
+});
+
+bot.action(/^release_fuse_(\d+)$/, (ctx) => {
+  handleReleaseFuse(ctx, parseInt(ctx.match[1]));
+});
+
+bot.action('release_cancel', (ctx) => {
+  ctx.answerCbQuery();
+  ctx.reply('❌ Release cancelled.');
+});
+
+bot.action(/^item_buy_(.+)$/, (ctx) => {
+  handleItemBuy(ctx, ctx.match[1]);
+});
+
+bot.action('item_buy_slot', (ctx) => {
+  handleSlotBuy(ctx);
 });
 
 bot.launch();

@@ -1,6 +1,7 @@
 const { Markup } = require('telegraf');
 const db = require('../database');
-const { rollRarity, getRandomPetByRarity, RARITY_EMOJI } = require('../pet/templates');
+const { rollRarity, getRandomPetByRarity, RARITY_EMOJI, GROWTH_EMOJI } = require('../pet/templates');
+const { getExpToLevel } = require('../pet/templates');
 const { getOrCreateUser } = require('../utils/helpers');
 
 const FREE_HATCH_COOLDOWN = 3 * 60 * 60 * 1000;
@@ -103,9 +104,9 @@ function performHatch(ctx, user, rarity) {
   const template = getRandomPetByRarity(rarity);
 
   const stmt = db.prepare(
-    'INSERT INTO pets (owner_id, name, species, rarity, hp, attack, defense) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    'INSERT INTO pets (owner_id, name, species, rarity, growth_rate, hp, attack, defense) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
   );
-  const result = stmt.run(user.id, template.name, template.species, rarity, template.hp, template.attack, template.defense);
+  const result = stmt.run(user.id, template.name, template.species, rarity, template.growth, template.hp, template.attack, template.defense);
 
   const newPet = db.prepare('SELECT * FROM pets WHERE id = ?').get(result.lastInsertRowid);
 
@@ -118,7 +119,8 @@ function performHatch(ctx, user, rarity) {
     `${RARITY_EMOJI[rarity]} *You hatched a ${rarity.charAt(0).toUpperCase() + rarity.slice(1)} ${template.name}!*\n\n` +
     `Species: ${template.species}\n` +
     `Type: ${template.type}\n` +
-    `HP: ${template.hp} | ATK: ${template.attack} | DEF: ${template.defense}\n\n` +
+    `HP: ${template.hp} | ATK: ${template.attack} | DEF: ${template.defense}\n` +
+    `Growth: ${GROWTH_EMOJI[template.growth]} ${template.growth}\n\n` +
     `_${template.description}_\n\n` +
     `To rename your pet, use: /rename ${newPet.id} <new_name>`,
     {
@@ -184,11 +186,13 @@ function petsCommand(ctx) {
     );
   }
 
-  let text = `🐾 *Your Pets*\n\n`;
+  let text = `🐾 *Your Pets (${pets.length}/${user.max_pet_slots})*\n\n`;
   for (const pet of pets) {
     const active = pet.is_active ? ' ⭐' : '';
+    const expToNext = getExpToLevel(pet.level);
     text += `${RARITY_EMOJI[pet.rarity]} *${pet.name}* (${pet.rarity}) - Lv.${pet.level}${active}\n`;
-    text += `   HP: ${pet.hp} | ATK: ${pet.attack} | DEF: ${pet.defense}\n\n`;
+    text += `   HP: ${pet.hp} | ATK: ${pet.attack} | DEF: ${pet.defense}\n`;
+    text += `   Growth: ${GROWTH_EMOJI[pet.growth_rate]} ${pet.growth_rate} | EXP: ${pet.exp}/${expToNext}\n\n`;
   }
 
   ctx.reply(text, { parse_mode: 'Markdown' });
