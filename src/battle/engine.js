@@ -283,7 +283,27 @@ function endBattle(ctx, battle, won) {
   if (won) {
     const rewards = calculateBattleRewards(battle.monster, battle.pet);
 
-    db.prepare('UPDATE users SET coins = coins + ? WHERE id = ?').run(rewards.coinReward, battle.userId);
+    db.prepare('UPDATE users SET coins = coins + ?, total_exp = total_exp + ? WHERE id = ?')
+      .run(rewards.coinReward, rewards.expReward, battle.userId);
+
+    const playerUser = db.prepare('SELECT * FROM users WHERE id = ?').get(battle.userId);
+    let newPlayerExp = playerUser.exp + rewards.expReward;
+    let newPlayerLevel = playerUser.level;
+    let playerLeveledUp = false;
+
+    while (newPlayerExp >= newPlayerLevel * 100 && newPlayerLevel < 50) {
+      newPlayerExp -= newPlayerLevel * 100;
+      newPlayerLevel++;
+      playerLeveledUp = true;
+
+      const levelCoins = newPlayerLevel <= 10 ? 100 * newPlayerLevel : newPlayerLevel <= 20 ? 200 * newPlayerLevel : 300 * newPlayerLevel;
+      db.prepare('UPDATE users SET coins = coins + ? WHERE id = ?').run(levelCoins, battle.userId);
+    }
+
+    if (newPlayerLevel >= 50) newPlayerExp = 0;
+
+    db.prepare('UPDATE users SET exp = ?, level = ? WHERE id = ?')
+      .run(newPlayerExp, newPlayerLevel, battle.userId);
 
     const pet = db.prepare('SELECT * FROM pets WHERE id = ?').get(battle.pet.id);
     let newExp = pet.exp + rewards.expReward;
@@ -342,9 +362,11 @@ function endBattle(ctx, battle, won) {
       text += `${msg}\n`;
     }
     text += `\n💰 *Rewards:*\n`;
-    text += `+${rewards.expReward} EXP\n`;
+    text += `+${rewards.expReward} EXP (pet)\n`;
+    text += `+${rewards.expReward} EXP (player)\n`;
     text += `+${rewards.coinReward} Coins\n`;
-    if (leveledUp) text += `🎉 Level Up! Now Lv.${newLevel}!\n`;
+    if (leveledUp) text += `🎉 Pet Level Up! Now Lv.${newLevel}!\n`;
+    if (playerLeveledUp) text += `🎉 Player Level Up! Now Lv.${newPlayerLevel}!\n`;
     if (rewards.drops.length > 0) {
       text += `\n🎁 *Drops:*\n`;
       for (const drop of rewards.drops) {
@@ -352,6 +374,7 @@ function endBattle(ctx, battle, won) {
       }
     }
     text += `\n💰 Total coins: ${updatedUser.coins}`;
+    text += `\n📊 Player Lv.${newPlayerLevel} | EXP: ${newPlayerExp}/${newPlayerLevel * 100}`;
 
     ctx.reply(text, { parse_mode: 'Markdown' });
   } else {
