@@ -117,12 +117,12 @@ bot.action('release_cancel', (ctx) => {
   ctx.reply('❌ Release cancelled.');
 });
 
-bot.action(/^item_buy_(.+)$/, (ctx) => {
-  handleItemBuy(ctx, ctx.match[1]);
-});
-
 bot.action('item_buy_slot', (ctx) => {
   handleSlotBuy(ctx);
+});
+
+bot.action(/^item_buy_(.+)$/, (ctx) => {
+  handleItemBuy(ctx, ctx.match[1]);
 });
 
 bot.action(/^skillshop_buy_(\d+)$/, (ctx) => {

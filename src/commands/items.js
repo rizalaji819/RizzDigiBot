@@ -72,11 +72,10 @@ function handleItemBuy(ctx, itemName) {
   const updatedUser = getOrCreateUser(ctx.from.id, ctx.from.username);
 
   ctx.reply(
-    `✅ *Bought 1 ${item.name}!*\n\n` +
+    `✅ Bought 1 ${item.name}!\n\n` +
     `${item.description}\n` +
-    `💰 Remaining coins: *${updatedUser.coins.toLocaleString()}*\n\n` +
-    `Use /feed <pet_id> to feed your pet!`,
-    { parse_mode: 'Markdown' }
+    `💰 Remaining coins: ${updatedUser.coins.toLocaleString()}\n\n` +
+    `Use /feed <pet_id> to feed your pet!`
   );
 }
 
@@ -103,10 +102,9 @@ function handleSlotBuy(ctx) {
   const updatedUser = getOrCreateUser(ctx.from.id, ctx.from.username);
 
   ctx.reply(
-    `📦 *Bought 1 Pet Slot!*\n\n` +
+    `📦 Bought 1 Pet Slot!\n\n` +
     `Pet slots: ${updatedUser.max_pet_slots}/${MAX_PET_SLOTS}\n` +
-    `💰 Remaining coins: *${updatedUser.coins.toLocaleString()}*`,
-    { parse_mode: 'Markdown' }
+    `💰 Remaining coins: ${updatedUser.coins.toLocaleString()}`
   );
 }
 
