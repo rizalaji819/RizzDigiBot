@@ -141,6 +141,25 @@ db.exec(`
   );
 `);
 
+const migrateColumns = [
+  { table: 'users', column: 'total_exp', definition: 'INTEGER DEFAULT 0' },
+  { table: 'users', column: 'daily_streak', definition: 'INTEGER DEFAULT 0' },
+  { table: 'users', column: 'last_daily', definition: 'DATETIME' },
+  { table: 'users', column: 'last_free_hatch', definition: 'DATETIME' },
+  { table: 'users', column: 'max_pet_slots', definition: 'INTEGER DEFAULT 5' },
+  { table: 'pets', column: 'growth_rate', definition: "TEXT DEFAULT 'C'" },
+  { table: 'pets', column: 'prestige', definition: 'INTEGER DEFAULT 0' },
+  { table: 'pets', column: 'prestige_bonus', definition: 'REAL DEFAULT 1.0' },
+];
+
+for (const m of migrateColumns) {
+  try {
+    db.prepare(`ALTER TABLE ${m.table} ADD COLUMN ${m.column} ${m.definition}`).run();
+  } catch (e) {
+    // Column already exists, ignore
+  }
+}
+
 const { insertPetTemplates, insertItemTemplates } = require('../pet/templates');
 const { insertSkillTemplates } = require('../pet/skills');
 const { insertWildMonsters } = require('../battle/monsters');
