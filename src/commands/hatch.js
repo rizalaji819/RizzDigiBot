@@ -64,7 +64,7 @@ function hatchCommand(ctx) {
 }
 
 function handleHatchEgg(ctx, rarity) {
-  ctx.answerCbQuery();
+  ctx.answerCbQuery('🥚 Hatching...');
 
   const user = getOrCreateUser(ctx.from.id, ctx.from.username);
   const eggs = db.prepare('SELECT * FROM egg_inventory WHERE owner_id = ? AND rarity = ? AND quantity > 0').get(user.id, rarity);
@@ -83,7 +83,7 @@ function handleHatchEgg(ctx, rarity) {
 }
 
 function handleFreeHatch(ctx) {
-  ctx.answerCbQuery();
+  ctx.answerCbQuery('🥚 Hatching...');
 
   const user = getOrCreateUser(ctx.from.id, ctx.from.username);
   const lastHatch = user.last_free_hatch ? new Date(user.last_free_hatch).getTime() : 0;
