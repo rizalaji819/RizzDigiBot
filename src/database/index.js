@@ -17,6 +17,7 @@ db.exec(`
     coins INTEGER DEFAULT 0,
     level INTEGER DEFAULT 1,
     exp INTEGER DEFAULT 0,
+    last_free_hatch DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -36,6 +37,15 @@ db.exec(`
     FOREIGN KEY (owner_id) REFERENCES users(id)
   );
 
+  CREATE TABLE IF NOT EXISTS egg_inventory (
+    id INTEGER PRIMARY KEY,
+    owner_id INTEGER NOT NULL,
+    rarity TEXT NOT NULL,
+    quantity INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id)
+  );
+
   CREATE TABLE IF NOT EXISTS pet_templates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -47,5 +57,8 @@ db.exec(`
     description TEXT
   );
 `);
+
+const { insertPetTemplates } = require('../pet/templates');
+insertPetTemplates(db);
 
 module.exports = db;
