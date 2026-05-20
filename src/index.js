@@ -1,6 +1,6 @@
 const { Telegraf } = require('telegraf');
 const config = require('./config');
-const { startCommand } = require('./commands/start');
+const { startCommand, helpCommand, handleHelpCategory, handleHelpBack } = require('./commands/start');
 const { shopCommand, handleShopBuy } = require('./commands/shop');
 const {
   hatchCommand,
@@ -56,7 +56,7 @@ if (!config.BOT_TOKEN) {
 const bot = new Telegraf(config.BOT_TOKEN);
 
 bot.start(startCommand);
-bot.command('help', startCommand);
+bot.command('help', helpCommand);
 bot.command('shop', shopCommand);
 bot.command('hatch', hatchCommand);
 bot.command('eggs', eggsCommand);
@@ -135,6 +135,14 @@ bot.action(/^battle_zone_(.+)$/, (ctx) => {
 
 bot.action(/^battle_skill_(\d+)$/, (ctx) => {
   handleBattleSkill(ctx, parseInt(ctx.match[1]));
+});
+
+bot.action(/^help_(.+)$/, (ctx) => {
+  handleHelpCategory(ctx, ctx.match[1]);
+});
+
+bot.action('help_back', (ctx) => {
+  handleHelpBack(ctx);
 });
 
 bot.launch();
