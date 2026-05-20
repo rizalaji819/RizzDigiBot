@@ -21,12 +21,12 @@ function calculateElementMultiplier(attackerElement, defenderElement) {
 }
 
 function calculateDamage(attacker, defender, skill) {
-  const baseDamage = skill.power > 0 ? (attacker.attack * skill.power) / 100 : attacker.attack * 0.5;
+  const baseDamage = skill.power > 0 ? (attacker.attack * skill.power) / 100 : attacker.attack;
   const elementMultiplier = calculateElementMultiplier(skill.element, defender.element || 'neutral');
   const criticalChance = 0.1 + (attacker.speed || 0) / 1000;
   const isCritical = Math.random() < criticalChance;
   const criticalMultiplier = isCritical ? 1.5 : 1.0;
-  const defenseReduction = defender.defense * 0.5;
+  const defenseReduction = defender.defense * 0.3;
   let finalDamage = Math.floor(baseDamage * elementMultiplier * criticalMultiplier - defenseReduction);
   finalDamage = Math.max(1, finalDamage);
   return { damage: finalDamage, isCritical, elementMultiplier };
