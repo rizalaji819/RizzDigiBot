@@ -2,6 +2,7 @@ const { Markup } = require('telegraf');
 const db = require('../database');
 const { rollRarity, getRandomPetByRarity, RARITY_EMOJI, GROWTH_EMOJI } = require('../pet/templates');
 const { getExpToLevel } = require('../pet/templates');
+const { getRandomSkill, ELEMENT_EMOJI } = require('../pet/skills');
 const { getOrCreateUser } = require('../utils/helpers');
 
 const FREE_HATCH_COOLDOWN = 3 * 60 * 60 * 1000;
@@ -115,6 +116,9 @@ function performHatch(ctx, user, rarity) {
     db.prepare('UPDATE pets SET is_active = 1 WHERE id = ?').run(newPet.id);
   }
 
+  const randomSkill = getRandomSkill();
+  db.prepare('INSERT INTO pet_skills (pet_id, skill_id, slot) VALUES (?, ?, 1)').run(newPet.id, randomSkill.id);
+
   ctx.reply(
     `${RARITY_EMOJI[rarity]} *You hatched a ${rarity.charAt(0).toUpperCase() + rarity.slice(1)} ${template.name}!*\n\n` +
     `Species: ${template.species}\n` +
@@ -122,6 +126,8 @@ function performHatch(ctx, user, rarity) {
     `HP: ${template.hp} | ATK: ${template.attack} | DEF: ${template.defense}\n` +
     `Growth: ${GROWTH_EMOJI[template.growth]} ${template.growth}\n\n` +
     `_${template.description}_\n\n` +
+    `📜 *Bonus Skill: ${ELEMENT_EMOJI[randomSkill.element]} ${randomSkill.name}*\n` +
+    `${randomSkill.description}\n\n` +
     `To rename your pet, use: /rename ${newPet.id} <new_name>`,
     {
       parse_mode: 'Markdown',

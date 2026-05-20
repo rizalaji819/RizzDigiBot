@@ -26,8 +26,15 @@ const {
   itemShopCommand,
   handleItemBuy,
   handleSlotBuy,
-  inventoryCommand,
 } = require('./commands/items');
+const {
+  skillShopCommand,
+  handleSkillShopBuy,
+  skillLearnCommand,
+  skillsCommand,
+  skillSetCommand,
+  inventoryCommand,
+} = require('./commands/skills');
 
 if (!config.BOT_TOKEN) {
   console.error('BOT_TOKEN is not set in .env');
@@ -50,6 +57,10 @@ bot.command('release', releaseCommand);
 bot.command('prestige', prestigeCommand);
 bot.command('inventory', inventoryCommand);
 bot.command('items', itemShopCommand);
+bot.command('skillshop', skillShopCommand);
+bot.command('skilllearn', skillLearnCommand);
+bot.command('skills', skillsCommand);
+bot.command('skillset', skillSetCommand);
 
 bot.action(/^shop_buy_(.+)$/, (ctx) => {
   handleShopBuy(ctx, ctx.match[1]);
@@ -94,6 +105,10 @@ bot.action(/^item_buy_(.+)$/, (ctx) => {
 
 bot.action('item_buy_slot', (ctx) => {
   handleSlotBuy(ctx);
+});
+
+bot.action(/^skillshop_buy_(\d+)$/, (ctx) => {
+  handleSkillShopBuy(ctx, ctx.match[1]);
 });
 
 bot.launch();

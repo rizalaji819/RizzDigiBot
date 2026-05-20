@@ -77,10 +77,32 @@ db.exec(`
     quantity INTEGER DEFAULT 1,
     FOREIGN KEY (owner_id) REFERENCES users(id)
   );
+
+  CREATE TABLE IF NOT EXISTS skills (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    element TEXT NOT NULL,
+    power INTEGER DEFAULT 0,
+    effect TEXT,
+    description TEXT,
+    price INTEGER DEFAULT 0
+  );
+
+  CREATE TABLE IF NOT EXISTS pet_skills (
+    id INTEGER PRIMARY KEY,
+    pet_id INTEGER NOT NULL,
+    skill_id INTEGER NOT NULL,
+    slot INTEGER NOT NULL,
+    FOREIGN KEY (pet_id) REFERENCES pets(id),
+    FOREIGN KEY (skill_id) REFERENCES skills(id)
+  );
 `);
 
 const { insertPetTemplates, insertItemTemplates } = require('../pet/templates');
+const { insertSkillTemplates } = require('../pet/skills');
 insertPetTemplates(db);
 insertItemTemplates(db);
+insertSkillTemplates(db);
 
 module.exports = db;
