@@ -67,6 +67,17 @@ function handleHatchEgg(ctx, rarity) {
   ctx.answerCbQuery('🥚 Hatching...');
 
   const user = getOrCreateUser(ctx.from.id, ctx.from.username);
+
+  const petCount = db.prepare('SELECT COUNT(*) as count FROM pets WHERE owner_id = ?').get(user.id);
+  if (petCount.count >= user.max_pet_slots) {
+    return ctx.reply(
+      `❌ *Pet Slots Full!*\n\n` +
+      `You have ${petCount.count}/${user.max_pet_slots} pets.\n` +
+      `Release a pet or buy more slots at /items.`,
+      { parse_mode: 'Markdown' }
+    );
+  }
+
   const eggs = db.prepare('SELECT * FROM egg_inventory WHERE owner_id = ? AND rarity = ? AND quantity > 0').get(user.id, rarity);
 
   if (!eggs || eggs.quantity <= 0) {
@@ -86,6 +97,17 @@ function handleFreeHatch(ctx) {
   ctx.answerCbQuery('🥚 Hatching...');
 
   const user = getOrCreateUser(ctx.from.id, ctx.from.username);
+
+  const petCount = db.prepare('SELECT COUNT(*) as count FROM pets WHERE owner_id = ?').get(user.id);
+  if (petCount.count >= user.max_pet_slots) {
+    return ctx.reply(
+      `❌ *Pet Slots Full!*\n\n` +
+      `You have ${petCount.count}/${user.max_pet_slots} pets.\n` +
+      `Release a pet or buy more slots at /items.`,
+      { parse_mode: 'Markdown' }
+    );
+  }
+
   const lastHatch = user.last_free_hatch ? new Date(user.last_free_hatch).getTime() : 0;
   const now = Date.now();
 
