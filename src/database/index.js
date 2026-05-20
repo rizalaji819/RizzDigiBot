@@ -17,6 +17,9 @@ db.exec(`
     coins INTEGER DEFAULT 0,
     level INTEGER DEFAULT 1,
     exp INTEGER DEFAULT 0,
+    total_exp INTEGER DEFAULT 0,
+    daily_streak INTEGER DEFAULT 0,
+    last_daily DATETIME,
     last_free_hatch DATETIME,
     max_pet_slots INTEGER DEFAULT 5,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -119,6 +122,22 @@ db.exec(`
     zone TEXT NOT NULL,
     last_battle DATETIME,
     FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS trades (
+    id INTEGER PRIMARY KEY,
+    sender_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL,
+    status TEXT DEFAULT 'pending',
+    sender_pet_id INTEGER,
+    sender_items TEXT,
+    sender_coins INTEGER DEFAULT 0,
+    receiver_pet_id INTEGER,
+    receiver_items TEXT,
+    receiver_coins INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id)
   );
 `);
 

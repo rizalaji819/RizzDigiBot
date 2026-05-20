@@ -41,6 +41,12 @@ const {
   handleZoneSelect,
   handleBattleSkill,
 } = require('./battle/engine');
+const {
+  dailyCommand,
+  profileCommand,
+  leaderboardCommand,
+  tradeCommand,
+} = require('./commands/economy');
 
 if (!config.BOT_TOKEN) {
   console.error('BOT_TOKEN is not set in .env');
@@ -69,6 +75,10 @@ bot.command('skills', skillsCommand);
 bot.command('skillset', skillSetCommand);
 bot.command('zones', zonesCommand);
 bot.command('battle', battleCommand);
+bot.command('daily', dailyCommand);
+bot.command('profile', profileCommand);
+bot.command('leaderboard', leaderboardCommand);
+bot.command('trade', tradeCommand);
 
 bot.action(/^shop_buy_(.+)$/, (ctx) => {
   handleShopBuy(ctx, ctx.match[1]);
