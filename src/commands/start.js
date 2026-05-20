@@ -3,40 +3,60 @@ const { getOrCreateUser, getUserPets, getActivePet } = require('../utils/helpers
 const { RARITY_EMOJI } = require('../pet/templates');
 const db = require('../database');
 
-const HELP_CATEGORIES = {
-  '🐾 Pet System': [
-    { cmd: '/hatch', desc: 'Hatch a new pet (free every 3h or use eggs)' },
-    { cmd: '/eggs', desc: 'View your egg inventory' },
-    { cmd: '/pets', desc: 'View all your pets' },
-    { cmd: '/pet <id>', desc: 'View detailed pet stats' },
-    { cmd: '/rename <id> <name>', desc: 'Rename your pet' },
-    { cmd: '/feed <id>', desc: 'Feed pet with food items' },
-    { cmd: '/train <id>', desc: 'Train pet with coins' },
-    { cmd: '/release <id>', desc: 'Release pet (sell or fuse)' },
-    { cmd: '/prestige <id>', desc: 'Prestige pet (Lv.50 → reset +20% stats)' },
-  ],
-  '⚔️ Battle System': [
-    { cmd: '/battle', desc: 'Start battle (select zone)' },
-    { cmd: '/zones', desc: 'View available zones' },
-  ],
-  '📜 Skill System': [
-    { cmd: '/skills <pet_id>', desc: 'View pet skills' },
-    { cmd: '/skilllearn <pet_id> <skill_id>', desc: 'Learn skill from scroll' },
-    { cmd: '/skillset <pet_id> <slot> <skill_id>', desc: 'Set skill to slot' },
-  ],
-  '🛒 Shop System': [
-    { cmd: '/shop', desc: 'Buy eggs' },
-    { cmd: '/items', desc: 'Buy food items' },
-    { cmd: '/skillshop', desc: 'Buy skill scrolls' },
-    { cmd: '/inventory', desc: 'View your items' },
-  ],
-  '💰 Economy System': [
-    { cmd: '/daily', desc: 'Claim daily reward (Lv.5+)' },
-    { cmd: '/profile', desc: 'View your profile' },
-    { cmd: '/leaderboard', desc: 'Top 10 players' },
-    { cmd: '/trade @username', desc: 'Trade with player (Lv.10+)' },
-  ],
-};
+const HELP_CATEGORIES = [
+  {
+    id: 'pet',
+    name: '🐾 Pet System',
+    commands: [
+      { cmd: '/hatch', desc: 'Hatch a new pet (free every 3h or use eggs)' },
+      { cmd: '/eggs', desc: 'View your egg inventory' },
+      { cmd: '/pets', desc: 'View all your pets' },
+      { cmd: '/pet <id>', desc: 'View detailed pet stats' },
+      { cmd: '/rename <id> <name>', desc: 'Rename your pet' },
+      { cmd: '/feed <id>', desc: 'Feed pet with food items' },
+      { cmd: '/train <id>', desc: 'Train pet with coins' },
+      { cmd: '/release <id>', desc: 'Release pet (sell or fuse)' },
+      { cmd: '/prestige <id>', desc: 'Prestige pet (Lv.50 → reset +20% stats)' },
+    ],
+  },
+  {
+    id: 'battle',
+    name: '⚔️ Battle System',
+    commands: [
+      { cmd: '/battle', desc: 'Start battle (select zone)' },
+      { cmd: '/zones', desc: 'View available zones' },
+    ],
+  },
+  {
+    id: 'skill',
+    name: '📜 Skill System',
+    commands: [
+      { cmd: '/skills <pet_id>', desc: 'View pet skills' },
+      { cmd: '/skilllearn <pet_id> <skill_id>', desc: 'Learn skill from scroll' },
+      { cmd: '/skillset <pet_id> <slot> <skill_id>', desc: 'Set skill to slot' },
+    ],
+  },
+  {
+    id: 'shop',
+    name: '🛒 Shop System',
+    commands: [
+      { cmd: '/shop', desc: 'Buy eggs' },
+      { cmd: '/items', desc: 'Buy food items' },
+      { cmd: '/skillshop', desc: 'Buy skill scrolls' },
+      { cmd: '/inventory', desc: 'View your items' },
+    ],
+  },
+  {
+    id: 'economy',
+    name: '💰 Economy System',
+    commands: [
+      { cmd: '/daily', desc: 'Claim daily reward (Lv.5+)' },
+      { cmd: '/profile', desc: 'View your profile' },
+      { cmd: '/leaderboard', desc: 'Top 10 players' },
+      { cmd: '/trade @username', desc: 'Trade with player (Lv.10+)' },
+    ],
+  },
+];
 
 function startCommand(ctx) {
   const user = getOrCreateUser(ctx.from.id, ctx.from.username);
@@ -75,8 +95,8 @@ function helpCommand(ctx) {
   let text = `📚 *RizzDigiBot - Help Guide*\n\n`;
   text += `Select a category to see detailed commands:\n\n`;
 
-  const buttons = Object.keys(HELP_CATEGORIES).map((category) => {
-    return [Markup.button.callback(category, `help_${category.replace(/\s/g, '_').replace(/[🐾⚔️📜🛒💰]/g, '')}`)];
+  const buttons = HELP_CATEGORIES.map((cat) => {
+    return [Markup.button.callback(cat.name, `help_${cat.id}`)];
   });
 
   ctx.reply(text, {
@@ -85,19 +105,18 @@ function helpCommand(ctx) {
   });
 }
 
-function handleHelpCategory(ctx, category) {
+function handleHelpCategory(ctx, categoryId) {
   ctx.answerCbQuery();
 
-  const cleanCategory = category.replace(/_/g, ' ');
-  const commands = HELP_CATEGORIES[cleanCategory];
+  const category = HELP_CATEGORIES.find(c => c.id === categoryId);
 
-  if (!commands) {
+  if (!category) {
     return ctx.reply('❌ Category not found!');
   }
 
-  let text = `📚 *${cleanCategory}*\n\n`;
+  let text = `📚 *${category.name}*\n\n`;
 
-  for (const cmd of commands) {
+  for (const cmd of category.commands) {
     text += `*${cmd.cmd}*\n`;
     text += `   ${cmd.desc}\n\n`;
   }
@@ -120,8 +139,8 @@ function handleHelpBack(ctx) {
   let text = `📚 *RizzDigiBot - Help Guide*\n\n`;
   text += `Select a category to see detailed commands:\n\n`;
 
-  const buttons = Object.keys(HELP_CATEGORIES).map((category) => {
-    return [Markup.button.callback(category, `help_${category.replace(/\s/g, '_').replace(/[🐾⚔️📜🛒💰]/g, '')}`)];
+  const buttons = HELP_CATEGORIES.map((cat) => {
+    return [Markup.button.callback(cat.name, `help_${cat.id}`)];
   });
 
   ctx.reply(text, {
