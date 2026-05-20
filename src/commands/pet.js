@@ -249,16 +249,16 @@ function handleReleaseSell(ctx, petId) {
   }
 
   const sellPrice = getSellPrice(pet.rarity);
-  db.prepare('UPDATE users SET coins = coins + ? WHERE id = ?').run(sellPrice, user.id);
+  db.prepare('DELETE FROM pet_skills WHERE pet_id = ?').run(petId);
   db.prepare('DELETE FROM pets WHERE id = ?').run(petId);
+  db.prepare('UPDATE users SET coins = coins + ? WHERE id = ?').run(sellPrice, user.id);
 
   const updatedUser = getOrCreateUser(ctx.from.id, ctx.from.username);
 
   ctx.reply(
-    `💰 *Sold ${pet.name}!*\n\n` +
+    `💰 Sold ${pet.name}!\n\n` +
     `+${sellPrice} coins\n` +
-    `💰 Total coins: ${updatedUser.coins}`,
-    { parse_mode: 'Markdown' }
+    `💰 Total coins: ${updatedUser.coins}`
   );
 }
 
@@ -278,16 +278,16 @@ function handleReleaseFuse(ctx, petId) {
   }
 
   const expTransfer = Math.floor(pet.exp + (pet.level - 1) * 50);
+  db.prepare('DELETE FROM pet_skills WHERE pet_id = ?').run(petId);
   db.prepare('DELETE FROM pets WHERE id = ?').run(petId);
 
   const result = addExpToPet(activePet, expTransfer);
 
   ctx.reply(
-    `🔄 *Fused ${pet.name} into ${activePet.name}!*\n\n` +
+    `🔄 Fused ${pet.name} into ${activePet.name}!\n\n` +
     `+${expTransfer} EXP transferred\n` +
     (result.leveledUp ? `🎉 ${activePet.name} leveled up! Now Lv.${result.newLevel}!\n` : '') +
-    `${activePet.name} EXP: ${result.newExp}/${getExpToLevel(result.newLevel)}`,
-    { parse_mode: 'Markdown' }
+    `${activePet.name} EXP: ${result.newExp}/${getExpToLevel(result.newLevel)}`
   );
 }
 
