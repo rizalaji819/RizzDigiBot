@@ -196,10 +196,16 @@ function petsCommand(ctx) {
   for (const pet of pets) {
     const active = pet.is_active ? ' ⭐' : '';
     const expToNext = getExpToLevel(pet.level);
-    text += `${RARITY_EMOJI[pet.rarity]} *${pet.name}* (${pet.rarity}) - Lv.${pet.level}${active}\n`;
+    text += `*#${pet.id}* ${RARITY_EMOJI[pet.rarity]} *${pet.name}* (${pet.rarity}) - Lv.${pet.level}${active}\n`;
     text += `   HP: ${pet.hp} | ATK: ${pet.attack} | DEF: ${pet.defense}\n`;
     text += `   Growth: ${GROWTH_EMOJI[pet.growth_rate]} ${pet.growth_rate} | EXP: ${pet.exp}/${expToNext}\n\n`;
   }
+
+  text += `📌 *Quick Commands:*\n`;
+  text += `/pet <id> - View details\n`;
+  text += `/feed <id> - Feed pet\n`;
+  text += `/train <id> - Train pet\n`;
+  text += `/rename <id> <name> - Rename`;
 
   ctx.reply(text, { parse_mode: 'Markdown' });
 }
