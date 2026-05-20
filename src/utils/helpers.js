@@ -1,4 +1,4 @@
-const db = require('./database');
+const db = require('../database');
 
 function getOrCreateUser(telegramId, username) {
   let user = db.prepare('SELECT * FROM users WHERE telegram_id = ?').get(telegramId);
