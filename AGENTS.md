@@ -34,10 +34,12 @@ RizzDigiBot/
 │       └── formatters.js     # Text formatting, keyboards
 ├── data/
 │   └── rizzdigi.db           # SQLite database (git ignored)
-├── .env                      # Environment variables (git ignored)
-├── .env.example              # Template env
-├── ROADMAP.md                # Development roadmap
-├── AGENTS.md                 # This file
+├── docs/
+│   ├── ROADMAP.md              # Full development roadmap
+│   └── PHASE-2.1.md            # Hatch system details
+├── .env                        # Environment variables (git ignored)
+├── .env.example                # Template env
+├── AGENTS.md                   # This file
 └── package.json
 ```
 
